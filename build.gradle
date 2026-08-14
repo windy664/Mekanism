@@ -893,6 +893,7 @@ def allJar = tasks.register('allJar', AllJar, {
     dependsOn(mergeModuleResources)
     duplicatesStrategy = DuplicatesStrategy.FAIL
     archiveClassifier.set('all')
+    archiveFileName.set("[通用机械]Mekanism-${project.version}-all.jar")
     manifest.attributes(getManifestAttributes('MekanismAll'))
     pathsToExclude.set(mergeModuleResources.<RegularFile> flatMap(m -> m.pathsToExclude))
     apiOutput = sourceSets.api.output

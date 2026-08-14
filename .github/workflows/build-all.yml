@@ -1,0 +1,42 @@
+# This workflow builds the Mekanism "all" package
+
+name: Build All Package
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: 25
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+
+      - name: Build All Jar
+        run: sh gradlew allJar
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+
+      - name: Upload All Jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: Mekanism-All
+          path: build/libs/*-all.jar
